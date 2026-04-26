@@ -1,0 +1,38 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "api"
+path = "src/lib.rs"
+
+[[bin]]
+name = "api"
+path = "src/main.rs"
+
+[[bin]]
+name = "generate-openapi"
+path = "bin/generate_openapi.rs"
+
+[dependencies]
+tracing = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+application = { workspace = true }
+domain = { workspace = true }
+infrastructure = { workspace = true }
+shared = { workspace = true }
+dotenv = { workspace = true }
+envy = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+env_logger = { workspace = true }
+
+actix-web = "4.13.0"
+actix-cors = "0.7.1"
+validator = { version = "0.20", features = ["derive"] }
+utoipa = { version = "5.3", features = ["actix_extras", "chrono", "uuid"] }
+utoipa-swagger-ui = { version = "8.0", features = ["actix-web"] }
+serde_yaml = "0.9"

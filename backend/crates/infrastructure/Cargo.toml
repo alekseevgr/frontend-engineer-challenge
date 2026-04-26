@@ -1,0 +1,21 @@
+[package]
+name = "infrastructure"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+domain = { workspace = true }
+application = { workspace = true }
+shared = { workspace = true }
+serde = { workspace = true }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true }
+envy = { workspace = true }
+dotenv = { workspace = true }
+serde_json = { workspace = true }
+
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "chrono", "uuid", "migrate"] }
+bcrypt = "0.18"
+lettre = { version = "0.11.19", features = ["native-tls"] }
+urlencoding = "2.1.3"

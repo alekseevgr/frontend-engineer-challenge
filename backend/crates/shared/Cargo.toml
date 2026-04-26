@@ -1,0 +1,15 @@
+[package]
+name = "shared"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+envy = { workspace = true }
+dotenv = { workspace = true }
+serde = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+jsonwebtoken = { version = "10.3.0", features = ["aws_lc_rs"] }
+anyhow = "1.0.102"
+actix-governor = "0.10.0"
+utoipa = { version = "5.3", features = ["uuid"] }

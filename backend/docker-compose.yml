@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: challenge
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d challenge"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+    environment:
+      # Database (PostgresConfig)
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/challenge
+      MAX_CONNECTIONS: 10
+      MIN_CONNECTIONS: 2
+      CONNECT_TIMEOUT_SECONDS: 30
+      IDLE_TIMEOUT_SECONDS: 600
+      MAX_LIFETIME_SECONDS: 1800
+
+      # JWT & Server (ServerConfig)
+      JWT_SECRET: your-secret-key-change-in-production
+      HOST: 0.0.0.0
+      PORT: 8080
+      RATE_LIMITING_REQUESTS: 10
+      RATE_LIMITING_BURST_SIZE: 20
+
+      MAILER_HOST: smtp.mail.ru
+      MAILER_PORT: 465
+      MAILER_USERNAME: azarenkov20141@mail.ru
+      MAILER_PASSWORD: 85xYx6L9tuT8f7JaDaeD
+      MAILER_FROM: azarenkov20141@mail.ru
+      MAILER_PASSWORD_RESET_BASE_URL: http://localhost:3000
+      # Logging
+      RUST_LOG: info
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  network:
+    driver: bridge
+    name: network
+
+volumes:
+  postgres-data:
+    name: postgres-data
